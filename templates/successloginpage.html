@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <h2>Welcome {{user.name}}</h2>
+
+    <p> age: {{user.age}} </p>
+    <p>height: {{user.height}} </p>
+    <P>weight: {{user.weight}}</P>
+
+    <form method="POST" action="{{url_for('update', id=user.id)}}">
+        <input type="number" name="updateweight" placeholder="update weight">
+        <input type="submit" placeholder="submit">
+    </form>
+
+    <p>date: {{user.date}} </p>
+
+    <form method="POST" action="{{url_for('delete', id=user.id)}}">
+        <button type="submit">Delete account</button>
+    </form>
+    
+    <p><a href="{{ url_for('home')}}">Logout</a></p>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="POST">
+        {{form.hidden_tag()}}
+
+        {{form.name.label}}<br>
+        {{form.name}}<br><br>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    {{message}}<br><br>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        {{form.password.label}}<br>
+        {{form.password}}<br><br>
+
+        {{form.age.label}}<br>
+        {{form.age}}<br><br>
+
+        {{form.height.label}}<br>
+        {{form.height}}<br><br>
+
+        {{form.date.label}}<br>
+        {{form.date}}<br><br>
+
+        {{form.weight.label}}<br>
+        {{form.weight}}<br><br>
+
+        {{form.submit}}
+
+    </form> 
+</body>
+</html>
