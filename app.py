@@ -27,7 +27,13 @@ class Users(db.Model):
         self.height = height
         self.date = date
         self.weight = weight
- 
+
+class Expense(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    title = db.Column(db.String(100))
+    amount = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
 @app.route("/")
 def home():
     return render_template('home.html')
@@ -74,8 +80,9 @@ def successlogin():
     if 'user_id' not in session:
         return redirect(url_for('login'))
     user = Users.query.get(session['user_id'])
+    expenses = Expense.query.filter_by(user_id = session['user_id']).all()
  
-    return render_template('successloginpage.html', user=user)
+    return render_template('successloginpage.html', user=user, expenses=expenses)
 
 @app.route("/update/<int:id>", methods=['POST'])
 def update(id):
@@ -87,8 +94,8 @@ def update(id):
 
     if user:
 
-        new_age = request.form.get("updateweight")
-        user.weight = new_age
+        new_weight = request.form.get("updateweight")
+        user.weight = new_weight
 
         db.session.commit()
 
@@ -101,11 +108,54 @@ def delete(id):
         return redirect(url_for('login'))
     
     user = Users.query.get(session['user_id'])
-    
+    expenses = Expense.query.filter_by(user_id=session['user_id']).all()
+
+    for expense in expenses:
+        db.session.delete(expense)
+ 
     if user:
         db.session.delete(user)
         db.session.commit()
+
     return redirect(url_for('login'))
+
+@app.route("/add_expense", methods=['POST'])
+def add_expense():
+
+    if "user_id" not in session:
+        return redirect(url_for('login'))
+    
+    title = request.form.get("title")
+    amount = request.form.get("amount")
+
+    expense = Expense(
+        title=title,
+        amount=amount,
+        user_id=session['user_id']
+    )
+    
+    db.session.add(expense)
+    db.session.commit()
+
+    return redirect(url_for('successlogin'))
+
+@app.route("/updateexpense/<int:id>", methods=['POST'])
+def updateexpense(id):
+    if 'user_id' not in session:
+        return redirect(url_for('login'))
+    
+    expense = Expense.query.get(id)
+
+    if expense and expense.user_id == session['user_id']:
+
+        update_title = request.form.get("edit_title")
+        update_expense = request.form.get("edit_expense")
+
+        expense.title = update_title
+        expense.amount = update_expense
+
+        db.session.commit()
+    return redirect(url_for('successlogin'))
 
 @app.route("/accountcreated")   
 def accountcreated():

@@ -23,6 +23,27 @@
     <form method="POST" action="{{url_for('delete', id=user.id)}}">
         <button type="submit">Delete account</button>
     </form>
+
+    <h2>ADD EXPENSES</h2>
+
+    <form method="POST" action="{{ url_for('add_expense') }}">
+        <input type="text" name="title" placeholder="Expense title" required>
+        <input type="number" name="amount" placeholder="Amount" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <h3>Your Expenses</h3>
+
+    {% for expense in expenses %}
+    <p>
+        {{ expense.title }} - rs{{ expense.amount }}
+        <form method="POST" action="{{ url_for('updateexpense', id=expense.id) }}">
+            <input type="text" name="edit_title" placeholder="exp title edit" required>
+            <input type="number" name="edit_expense" placeholder="exp edit">
+            <button type="submit">Edit</button> 
+        </form>
+    </p>
+    {% endfor %}
     
     <p><a href="{{ url_for('home')}}">Logout</a></p>
 
