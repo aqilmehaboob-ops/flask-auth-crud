@@ -107,9 +107,9 @@ One User → Many Expenses
 1. Clone the repository:
 
 
-git clone https://github.com/yourusername/yourrepo.git
+git clone https://github.com/https://github.com/aqilmehaboob-ops/flask-auth-crud
 
-cd yourrepo
+cd flask-auth-crud
 
 
 2. Create virtual environment:
